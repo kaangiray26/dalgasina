@@ -29,3 +29,7 @@ body {
 .clickable {
     cursor: pointer;
 }
+
+.card-img {
+    object-fit: cover;
+}

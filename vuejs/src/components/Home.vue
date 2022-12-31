@@ -20,7 +20,12 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+
 async function readBook() {
-    window.location.href = "/page/1"
+    router.push("/cover");
 }
 </script>

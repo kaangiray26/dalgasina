@@ -9,12 +9,12 @@ const routes = [
         component: Home
     },
     {
+        path: "/cover",
+        component: Cover
+    },
+    {
         path: "/page",
         children: [
-            {
-                path: "1",
-                component: Cover
-            },
             {
                 path: ":number",
                 component: Page

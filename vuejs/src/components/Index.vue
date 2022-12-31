@@ -7,9 +7,14 @@
         </div>
         <div class="offcanvas-body">
             <ul class="list-group">
-                <li v-for="(item, ind) in Object.keys(index)" class="list-group-item clickable list-group-item-action"
-                    @click="changeTo(item)">
-                    {{ ind + 2 }}. {{ index[item].title }}
+                <li class="list-group-item clickable list-group-item-action" @click="changeToCover">
+                    <span class="fw-bold text-decoration-underline">Kapak</span>
+                </li>
+                <li v-for="(item, ind) in index.poems"
+                    class="list-group-item clickable list-group-item-action d-flex align-items-center"
+                    @click="changeTo(ind)">
+                    <span class="badge text-bg-dark me-2">{{ ind + 1 }}</span><span class="fw-bold">{{ item.title
+                        }}</span>
                 </li>
             </ul>
         </div>
@@ -27,9 +32,14 @@ const router = useRouter();
 let offcanvas = null;
 const thisElem = ref(null);
 
-async function changeTo(item) {
+async function changeToCover() {
     offcanvas.hide();
-    router.push("/page/" + item)
+    router.push("/cover")
+}
+
+async function changeTo(index) {
+    offcanvas.hide();
+    router.push("/page/" + (index + 1))
 }
 
 async function _show() {

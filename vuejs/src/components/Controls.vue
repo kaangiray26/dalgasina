@@ -15,16 +15,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { store } from '/js/store.js';
+import Hammer from "hammerjs";
+import index from "/assets/index.json";
 import Index from './Index.vue';
 
 const router = useRouter();
 const thisIndex = ref(null);
-
-const page_number = ref(0);
 const visible = ref(false);
+const max_pages = ref(index.poems.length + 1);
+const page_number = ref(1);
+
+const query_param = computed(() => {
+    return router.currentRoute.value.params.number;
+})
 
 async function showIndex() {
     thisIndex.value.show();
@@ -45,16 +51,14 @@ async function hide() {
 }
 
 function nextPage() {
-    if (page_number.value < 73) {
-        page_number.value++;
-        router.push("/page/" + page_number.value);
+    if (page_number.value < max_pages.value) {
+        router.push("/page/" + (page_number.value + 1));
     }
 }
 
 function prevPage() {
     if (page_number.value > 1) {
-        page_number.value--;
-        router.push("/page/" + page_number.value);
+        router.push("/page/" + (page_number.value - 1));
     }
 }
 
@@ -72,8 +76,22 @@ async function keyPress(event) {
     }
 }
 
+watch(query_param, () => {
+    page_number.value = parseInt(query_param.value);
+})
+
 onMounted(() => {
-    page_number.value = parseInt(window.location.pathname.split("/page/")[1]);
+    page_number.value = parseInt(query_param.value);
+
+    let hammertime = new Hammer(document.body);
+    hammertime.on("swiperight", function () {
+        prevPage();
+        return;
+    });
+    hammertime.on("swipeleft", function () {
+        nextPage();
+        return;
+    });
 
     window.focus();
     window.addEventListener('keydown', keyPress);
