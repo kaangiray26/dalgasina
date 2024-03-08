@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Clean previous builds
+rm docs/main.pdf
+rm tex/main.pdf
+
+# Build
+cd tex
+pdflatex main.tex
+cp main.pdf ../docs/main.pdf
+
+# Return to root
+cd ../..
